@@ -14,17 +14,7 @@ from GameModel import *
 from GUI import *
 from Vaisseau import *
 from Armes import *
-#from Background_scroller import *
-
-class BackgroundStar(cocos.layer.Layer):
-	def __init__(self):
-		super(BackgroundStar, self).__init__()
-		Star = cocos.sprite.Sprite('Sprites/Star.png')
-		Star.position = (30,30)
-		Star.scale = 1
-		self.add(Star)
-		self.special = special
-		self.special.position = spaceship.position
+from Background_scroller import * 
 
 class GameView( Layer ):
 	def __init__(self, hud, vaisseau, col_manager ):
@@ -68,14 +58,14 @@ def get_newgame():
 	collision_manager = cm.CollisionManagerBruteForce()
 	
 	 # view
-	arme = Arme("Triple", 20, 'Sprites/Armes/missile1.png')
+	arme = Arme("Simple", 20, 'Sprites/Armes/missile1.png')
 	sprite = cocos.sprite.Sprite('Sprites/Ship_moche.png')
-	vaisseau = Vaisseau("Default", 100, sprite, arme, collision_manager);
+	shield = Shield(50,50)
+	vaisseau = Vaisseau("Default", 100, sprite, arme, collision_manager,shield);
 	hud = HUD()
 	view = GameView(hud, vaisseau, collision_manager)
-	Star = BackgroundStar()
-	#shield = Shield();
-	#ennemi = EnnemiCollidableSprite(sprite,100,100,50)
+	Star = BackgroundStar(30,60)
+	
 	
 	#model
 	model = GameModel()
@@ -87,14 +77,11 @@ def get_newgame():
 	scene.add( view, z=1, name="view" )
 	scene.add( ctrl, z=1, name="controller" )
 	scene.add( hud, z=3, name="hud" )
+	scene.add(shield, z = 3 , name = "Shield")
 	scene.add( vaisseau , z=2, name="vaisseau" )
-
-	#scene.add( shield, z-2, name="TestShield")
 	
 	scene.add( BackgroundLayer(), z=0, name="background" )
-	Scene.add(Star, z=0, name="Background_Stars")
-
-	#background.do(Repeat( Reverse(scale) + scale ) )
+	scene.add(Star,z = 0, name = "Stars")
 	
 
 	return scene

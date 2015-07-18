@@ -36,7 +36,7 @@ class GameCtrl( Layer ):
 				print("up")
 			elif k == key.SPACE:
 				self.view.vaisseau_shoot()
-				print("Shoot");
+				#print("Shoot");
 				
 	def on_mouse_motion (self, x, y, dx, dy):
 		self.view.update_pos_vaisseau(x,y)

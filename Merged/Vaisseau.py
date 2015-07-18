@@ -1,14 +1,12 @@
+import pyglet
 from cocos.director import director
 from cocos.layer import Layer
 from cocos.actions import *
 import cocos
-import cocos.euclid as eu
 import cocos.collision_model as cm
-from cocos import actions
-
 
 class Vaisseau(Layer):
-	def __init__(self, name, life, sprite, arme, collision_m):
+	def __init__(self, name, life, sprite, arme, collision_m,special):
 		super(Vaisseau,self).__init__()
 		
 		width, height = director.get_window_size()
@@ -29,6 +27,9 @@ class Vaisseau(Layer):
 		self.arme = arme
 		self.missileSprites = []
 		self.schedule(self.update)
+
+		self.special = special
+		self.special.shield.position = self.sprite.position
 	
 	
 	def shoot(self):
@@ -71,6 +72,8 @@ class Vaisseau(Layer):
 		
 	def update(self, dt):
 		self.sprite.cshape.center = self.sprite.position
+		self.special.shield.position = self.sprite.position
+
 		for missile in self.missileSprites:
 			missile.cshape.center = missile.position
 			w1 = missile.width
@@ -110,51 +113,45 @@ class MoveByAdditive(Action):
         if self._elapsed > self.duration:
             dt = self.duration - old_elapsed
             self._done = True
-        self.target.position += dt*self.delta_pos	
-
-class EnnemiCollidableSprite(cocos.sprite.Sprite):
-	def __init__(self, image, center_x, center_y, radius):
-		super(Me, self).__init__(image)
-		self.position = (center_x, center_y)
-		self.cshape = cm.CircleShape(eu.Vector2(center_x, center_y), radius)
+        self.target.position += dt*self.delta_pos		
 
 
 class Shield(cocos.layer.Layer):
 
     is_event_handler = True
 
-    def __init__(self):
+    def __init__(self,posX,posY):
         super(Shield, self).__init__()
         
         shield_ui100 = cocos.sprite.Sprite('Sprites/shield/shield_100.png')
-        shield_ui100.position = 0, 100
+        shield_ui100.position = posX, posY
         shield_ui100.scale = 0.1
         self.add(shield_ui100, z=0)
         self.shield_ui100 = shield_ui100
         
         shield_ui75 = cocos.sprite.Sprite('Sprites/shield/shield_75.png')
-        shield_ui75.position = 0, 100
+        shield_ui75.position = posX, posY
         shield_ui75.scale = 0.1
         self.add(shield_ui75, z=0)
         self.shield_ui75 = shield_ui75
         self.shield_ui75.do(Hide())
         
         shield_ui50 = cocos.sprite.Sprite('Sprites/shield/shield_50.png')
-        shield_ui50.position = 0, 100
+        shield_ui50.position = posX, posY
         shield_ui50.scale = 0.1
         self.add(shield_ui50, z=0)
         self.shield_ui50 = shield_ui50
         self.shield_ui50.do(Hide())
         
         shield_ui25 = cocos.sprite.Sprite('Sprites/shield/shield_25.png')
-        shield_ui25.position = 0, 100
+        shield_ui25.position = posX, posY
         shield_ui25.scale = 0.1
         self.add(shield_ui25, z=0)
         self.shield_ui25 = shield_ui25
         self.shield_ui25.do(Hide())
         
         shield_ui = cocos.sprite.Sprite('Sprites/shield/shield.png')
-        shield_ui.position = 0, 100
+        shield_ui.position = posX, posY
         shield_ui.scale = 0.1
         self.add(shield_ui, z=0)
         self.shield_ui = shield_ui
@@ -174,7 +171,7 @@ class Shield(cocos.layer.Layer):
         
     def on_key_press(self, key, modifiers):
         key_pressed = pyglet.window.key.symbol_string(key)
-        if key_pressed == 'SPACE' and self.isReload == 1:
+        if key_pressed == 'R' and self.isReload == 1:
             self.isReload = 0
             self.shield.do(Show())
             self.shield_ui100.do(Hide())
@@ -182,8 +179,6 @@ class Shield(cocos.layer.Layer):
             
             self.schedule_interval(self.shieldActivate, self.Durability)
             self.schedule_interval(self.reload, self.Reload/4)
-
-
     def reload(self, dt):
         self.ReloadState += self.Reload/4
         
