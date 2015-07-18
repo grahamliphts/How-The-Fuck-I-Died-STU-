@@ -16,7 +16,8 @@ from Vaisseau import *
 from Armes import *
 from Background_scroller import * 
 from Ennemi import *
-from Main import *
+from Bomb import * 
+from Shield import *
 
 class GameView( Layer ):
 	def __init__(self, hud, vaisseau, col_manager ):
@@ -38,19 +39,18 @@ class GameView( Layer ):
 	def vaisseau_shoot(self):
 		sprite = self.vaisseau.shoot()
 		self.col_manager.add(sprite)
-	
+                
 	def update(self,dt):
-
 		for other in self.col_manager.iter_colliding(self.vaisseau.sprite):
 			if other not in self.vaisseau.get_children():
 				#self.vaisseau.remove(other)
 				#self.vaisseau.missileSprites.remove(other)
 				print("PV -1")
 				#--------------------------------------TRUC TRES MOCHE--------------------------
-				scene = Scene()
-				scene.add( MultiplexLayer( MainMenu()),z=1 )
-				scene.add( BackgroundLayer(), z=0 )
-				director.run( scene )
+				#scene = Scene()
+				#scene.add( MultiplexLayer( MainMenu()),z=1 )
+				#scene.add( BackgroundLayer(), z=0 )
+				#director.run( scene )
 				#-------------------------------------END OF TRUC TRES MOCHE---------------------
 		#collide de missile
 		#for missile in self.vaisseau.missileSprites:
@@ -70,28 +70,30 @@ def get_newgame():
 	 # view
 	arme = Arme("Simple", 20, 'Sprites/Armes/missile1.png')
 	sprite = cocos.sprite.Sprite('Sprites/Ship_moche.png')
-	shield = Shield(50,50)
-	vaisseau = Vaisseau("Default", 100, sprite, arme, collision_manager,shield);
+	shield = Shield(50, 100)
+	bombSpe = Bomb(100, 120, 100)
+	vaisseau = Vaisseau("Default", 100, sprite, arme, collision_manager, shield, bombSpe);
 	hud = HUD()
 	view = GameView(hud, vaisseau, collision_manager)
 	Star = BackgroundStar(30,60)
 
-	ennemi_wave = Ennemi_wave(10,200,scene,collision_manager)
+	ennemi_wave = Ennemi_wave(20,200,scene,collision_manager)
 	
 	#model
 	model = GameModel()
 	# controller
 	ctrl = GameCtrl(model, view)
-    # set controller in model
+        # set controller in model
 	model.set_controller( ctrl )
 	
 	scene.add( view, z=1, name="view" )
 	scene.add( ctrl, z=1, name="controller" )
 	scene.add( hud, z=3, name="hud" )
-	scene.add(shield, z = 3 , name = "Shield")
+	scene.add( shield, z = 3 , name = "Shield")
+	scene.add( bombSpe, z = 3 , name = "Bombe")
 	scene.add( vaisseau , z=2, name="vaisseau" )
-	scene.add(ennemi_wave, z = 2, name = "ennemis")
+	scene.add( ennemi_wave, z = 2, name = "ennemis")
 	scene.add( BackgroundLayer(), z=0, name="background" )
-	scene.add(Star,z = 0, name = "Stars")
+	scene.add( Star,z = 0, name = "Stars")
 
 	return scene

@@ -25,7 +25,7 @@ class GameCtrl( Layer ):
 			return False
 		if self.used_key:
 			return False
-		if k in (key.LEFT, key.RIGHT, key.DOWN, key.UP,key.SPACE):
+		if k in (key.LEFT, key.RIGHT, key.DOWN, key.UP,key.SPACE, key.V, key.B):
 			if k == key.LEFT:
 				print("left")
 			elif k == key.RIGHT:
@@ -37,6 +37,10 @@ class GameCtrl( Layer ):
 			elif k == key.SPACE:
 				self.view.vaisseau_shoot()
 				#print("Shoot");
+			elif k == key.V:
+                                self.view.vaisseau.ActiveShield()
+			elif k == key.B:
+                                self.view.vaisseau.ExplodeBomb()
 				
 	def on_mouse_motion (self, x, y, dx, dy):
 		self.view.update_pos_vaisseau(x,y)
