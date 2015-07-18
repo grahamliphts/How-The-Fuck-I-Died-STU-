@@ -17,7 +17,7 @@ class Ennemi_wave(cocos.layer.Layer):
 		scale = ScaleBy(1.1, duration=0.5)
 
 		while i < StarNum :
-			X = randint(1700,2200)
+			X = randint(1700,1900)
 			Y = randint(0,800)
 			Ennemi_list.append(Ennemi('Sprites/ennemi_moche.PNG',self.speed,X,Y,self.collision,self.linkedScene))
 			scene.add(Ennemi_list[i], z = 2)
@@ -35,7 +35,7 @@ class Ennemi_wave(cocos.layer.Layer):
 		Ennemi_list = []
 		scale = ScaleBy(1.1, duration=0.5)
 		while i < StarNum :
-			X = randint(1700,2200)
+			X = randint(1700,1900)
 			Y = randint(0,800)
 			Ennemi_list.append(Ennemi('Sprites/ennemi_moche.PNG',self.speed,X,Y,self.collision,self.linkedScene))
 			self.linkedScene.add(Ennemi_list[i],z = 3)
@@ -79,12 +79,14 @@ class Ennemi(cocos.layer.Layer):
 		self.sprite.do( Repeat( Reverse(scale) + scale ) )
 		self.collision_manager = collisionManager
 		self.schedule_interval(self.fire,1)
+		self.schedule_interval(self.update,0.2)
 
 	def update(self,dt):
 		self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
 		collision = self.collision_manager.objs_colliding(self.sprite)
 		if collision : 
 			print("Collide ennemi")
+			#self.sprite.kill()
 		#print("Plouf")
 	def fire(self,dt):
 		Bullet = bullet(self.sprite.position[0],self.sprite.position[1],500,self.collision_manager)

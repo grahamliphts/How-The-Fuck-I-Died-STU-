@@ -72,19 +72,20 @@ class Vaisseau(Layer):
 		
 	def update(self, dt):
 
-		#self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
-		self.sprite.cshape.center = self.sprite.position 
+		self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
+		#self.sprite.cshape.center = self.sprite.position 
 		#self.special.shield.position = self.sprite.position
 
 		for missile in self.missileSprites:
-			missile.cshape.center = missile.position
-			w1 = missile.width
-			h1 = missile.height
-			x, y = missile.position
-			width, height = director.get_window_size()
-			if(x - w1 <= 0 or x + w1 >= width or y - h1 <= 0 or y + h1 >= height):
-				if missile in self.get_children():
-					self.remove(missile)
+			missile.cshape.center = eu.Vector2(missile.position[0], missile.position[1])
+		#	missile.cshape.center = missile.position
+		#	w1 = missile.width
+		#	h1 = missile.height
+		#	x, y = missile.position
+		#	width, height = director.get_window_size()
+		#	if(x - w1 <= 0 or x + w1 >= width or y - h1 <= 0 or y + h1 >= height):
+		#		if missile in self.get_children():
+		#			self.remove(missile)
 		#print("pouet")
 			
 	def on_enter(self):
