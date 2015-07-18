@@ -76,7 +76,7 @@ def get_newgame():
 	view = GameView(hud, vaisseau, collision_manager)
 	Star = BackgroundStar(30,60)
 
-	ennemi_wave = Ennemi_wave(20,200,scene,collision_manager)
+	ennemi_wave = Ennemi_wave(10,200,scene,collision_manager)
 	
 	#model
 	model = GameModel()
