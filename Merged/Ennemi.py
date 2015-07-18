@@ -121,5 +121,11 @@ class bullet(cocos.layer.Layer):
 	def bulletUpdate(self,dt):
 		#self.sprite.position = (self.sprite.position[0] - 2,self.sprite.position[1])
 		self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
+		collision = self.collision_manager.objs_colliding(self.sprite)
+		#if collision :
+		#	print("shoot collide")
+		#	self.kill()
+		#if self.sprite.position[0] < 0 :
+		#	self.remove(self.sprite)
 
 	
