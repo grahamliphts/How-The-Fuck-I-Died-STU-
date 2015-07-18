@@ -30,8 +30,8 @@ class GameView( Layer ):
 		self.col_manager = col_manager
 		self.schedule(self.update)
 
-		self.initHealth = 200
-		self.health = 200
+		self.initHealth = 1
+		self.health = 1
 		
 		healthGUI = cocos.sprite.Sprite('Sprites/GUI/Health_empty.png')
 		healthGUI.position = 210, 750
