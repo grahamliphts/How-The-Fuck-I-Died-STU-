@@ -11,8 +11,8 @@ class BackgroundStar(cocos.layer.Layer):
 		i = 0
 		scale = ScaleBy(1.1, duration=0.5)
 		while i < StarNum :
-			X = randint(-10, 2000)
-			Y = randint( -10, 900)
+			X = randint(-10, 1800)
+			Y = randint( -10, 800)
 			Star.append(cocos.sprite.Sprite('Sprites/Background/Star.png'))
 			Star[i].position = (X,Y)
 			Star[i].scale = 0.1

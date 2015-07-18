@@ -59,7 +59,7 @@ if __name__ == "__main__":
     pyglet.resource.reindex()
     font.add_directory('Sprites')
 
-    director.init( resizable=True, width=1600, height=800 )
+    director.init( resizable=False, width=1600, height=800 )
     scene = Scene()
     scene.add( MultiplexLayer( MainMenu()),z=1 )
     scene.add( BackgroundLayer(), z=0 )

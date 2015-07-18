@@ -15,6 +15,7 @@ from GUI import *
 from Vaisseau import *
 from Armes import *
 from Background_scroller import * 
+from Ennemi import *
 
 class GameView( Layer ):
 	def __init__(self, hud, vaisseau, col_manager ):
@@ -65,7 +66,8 @@ def get_newgame():
 	hud = HUD()
 	view = GameView(hud, vaisseau, collision_manager)
 	Star = BackgroundStar(30,60)
-	
+
+	ennemi_wave = Ennemi_wave(20,200,scene)
 	
 	#model
 	model = GameModel()
@@ -79,7 +81,7 @@ def get_newgame():
 	scene.add( hud, z=3, name="hud" )
 	scene.add(shield, z = 3 , name = "Shield")
 	scene.add( vaisseau , z=2, name="vaisseau" )
-	
+	scene.add(ennemi_wave, z = 2, name = "ennemis")
 	scene.add( BackgroundLayer(), z=0, name="background" )
 	scene.add(Star,z = 0, name = "Stars")
 	
