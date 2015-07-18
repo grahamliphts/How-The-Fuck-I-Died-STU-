@@ -18,6 +18,7 @@ from Background_scroller import *
 from Ennemi import *
 from Bomb import * 
 from Shield import *
+from Main import *
 
 class GameView( Layer ):
 	def __init__(self, hud, vaisseau, col_manager ):
@@ -47,10 +48,10 @@ class GameView( Layer ):
 				#self.vaisseau.missileSprites.remove(other)
 				print("PV -1")
 				#--------------------------------------TRUC TRES MOCHE--------------------------
-				#scene = Scene()
-				#scene.add( MultiplexLayer( MainMenu()),z=1 )
-				#scene.add( BackgroundLayer(), z=0 )
-				#director.run( scene )
+				scene = Scene()
+				scene.add( MultiplexLayer( EndScreen()),z=1 )
+				scene.add( BackgroundLayer(), z=0 )
+				director.run( scene )
 				#-------------------------------------END OF TRUC TRES MOCHE---------------------
 		#collide de missile
 		#for missile in self.vaisseau.missileSprites:
