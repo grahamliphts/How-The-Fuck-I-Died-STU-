@@ -29,6 +29,9 @@ class GameView( Layer ):
 		self.hud.show_message( 'GET READY')
 		self.col_manager = col_manager
 		self.schedule(self.update)
+
+		self.schedule_interval(self.calculate_time, 0.1)
+		self.score = 0
 		
 	def update_pos_vaisseau(self, x, y):
 		w1 = self.vaisseau.sprite.width/2
@@ -36,7 +39,11 @@ class GameView( Layer ):
 		width, height = director.get_window_size()
 		if(x - w1 >= 0 and x + w1 <= width and y - h1 >= 0 and y + h1 <= height):
 			self.vaisseau.sprite.position = (x,y)
-			
+	
+	def calculate_time(self, dt):
+		self.score += 1
+		pass
+
 	def vaisseau_shoot(self):
 		sprite = self.vaisseau.shoot()
 		self.col_manager.add(sprite)
@@ -49,7 +56,7 @@ class GameView( Layer ):
 				print("PV -1")
 				#--------------------------------------TRUC TRES MOCHE--------------------------
 				scene = Scene()
-				scene.add( MultiplexLayer( EndScreen()),z=1 )
+				scene.add( MultiplexLayer( EndScreen(self.score)),z=1 )
 				scene.add( BackgroundLayer(), z=0 )
 				director.run( scene )
 				#-------------------------------------END OF TRUC TRES MOCHE---------------------
@@ -63,11 +70,14 @@ class GameView( Layer ):
 	def on_exit(self):
 		super(GameView,self).on_exit()
 
+class scoreC( Layer ):
+	def __init__(self,value):
+		super(scoreC,self).__init__()
+		self.value = value
 def get_newgame():
 	'''returns the game scene'''
 	scene = Scene()
 	collision_manager = cm.CollisionManagerBruteForce()
-	
 	 # view
 	arme = Arme("Simple", 20, 'Sprites/Armes/missile1.png')
 	sprite = cocos.sprite.Sprite('Sprites/Ship_moche.png')
