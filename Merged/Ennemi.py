@@ -47,7 +47,7 @@ class Ennemi(cocos.layer.Layer):
 		self.sprite = cocos.sprite.Sprite (spritePath)
 		self.sprite.position = (posX,posY)
 		self.sprite.scale = 0.15
-		radius = 20
+		radius = 0.2
 		self.sprite.cshape = cm.CircleShape(eu.Vector2(posX, posY), radius)
 		self.add(self.sprite)
 		duration = self.sprite.position[0] / speed
@@ -58,9 +58,12 @@ class Ennemi(cocos.layer.Layer):
 
 		#----------------------- COLLIDER---------------------------		
 		collisionManager.add(self.sprite)
+		self.schedule_interval(self.update, 0.1)
 
 	def update(self,dt):
-		self.sprite.cshape.center = self.sprite.position
+		self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
 		collision = self.collision_manager.objs_colliding(self.sprite)
 		if collision : 
+			#self.remove()
 			print("Collide")
+		#print("Plouf")

@@ -39,14 +39,16 @@ class GameView( Layer ):
 		self.col_manager.add(sprite)
 	
 	def update(self,dt):
+
 		for other in self.col_manager.iter_colliding(self.vaisseau.sprite):
 			if other not in self.vaisseau.get_children():
-				self.vaisseau.remove(other)
-				self.vaisseau.missileSprites.remove(other)
+				#self.vaisseau.remove(other)
+				#self.vaisseau.missileSprites.remove(other)
+				print("PV -1")
 		#collide de missile
-		"""for missile in self.vaisseau.missileSprites:
-			for other in self.col_manager.iter_colliding(missile):
-				print("collide")"""
+		#for missile in self.vaisseau.missileSprites:
+			#for other in self.col_manager.iter_colliding(missile):
+				#print("collide Shoot")
 	
 	def on_enter(self):
 		super(GameView,self).on_enter()
