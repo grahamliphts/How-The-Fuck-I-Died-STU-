@@ -34,6 +34,9 @@ class Vaisseau(Layer):
 		self.bombClass = bomb
 	
 	def shoot(self):
+		s = Sound() 
+		s.read('sound.wav') 
+		s.play()
 		x, y = self.sprite.position
 		width, height = director.get_window_size()
 		if(self.arme.name == "Simple"):

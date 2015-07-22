@@ -1,5 +1,4 @@
 import cocos
-
 import pyglet
 from pyglet import gl, font
 from pyglet.window.key import KeyStateHandler
@@ -22,7 +21,7 @@ class MainMenu( Menu ):
         super( MainMenu, self).__init__('How the #(%@ i die') 
 
         #self.select_sound = soundex.load('move.mp3')
-
+        
         # you can override the font that will be used for the title and the items
         # you can also override the font size and the colors. see menu.py for
         # more info

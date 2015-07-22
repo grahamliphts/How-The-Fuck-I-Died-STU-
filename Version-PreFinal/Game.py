@@ -71,6 +71,8 @@ class GameView( Layer ):
 					self.healthState.scale = self.health / self.initHealth
 				# FIN DE PARTIE
 				if self.health <= 0:
+					music = pyglet.media.load("Song/death.wav")
+					music.play()
 					scene = Scene()
 					scene.add( MultiplexLayer( EndScreen(self.score)),z=1 )
 					scene.add( BackgroundLayer(), z=0 )

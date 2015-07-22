@@ -38,6 +38,8 @@ class Vaisseau(Layer):
 
 	
 	def shoot(self):
+		music = pyglet.media.load("Song/laser.wav")
+		music.play()
 		x, y = self.sprite.position
 		width, height = director.get_window_size()
 		if(self.arme.name == "Simple"):
@@ -65,9 +67,13 @@ class Vaisseau(Layer):
 		return self.missileSprites[-1]
 			
 	def ActiveShield(self):
+		music = pyglet.media.load("Song/shield.wav")
+		music.play()
 		self.shieldClass.ActiveShield()
 		
 	def ExplodeBomb(self):
+		music = pyglet.media.load("Song/bombe.wav")
+		music.play()
 		self.bombClass.Explode(self.sprite.position)
 		
 	def add_collider_missile(self, sprite):
@@ -85,6 +91,7 @@ class Vaisseau(Layer):
                 
 		for missile in self.missileSprites:
 			missile.cshape.center = eu.Vector2(missile.position[0], missile.position[1])
+	
 			
 	def on_enter(self):
 		super(Vaisseau,self).on_enter()

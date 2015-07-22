@@ -1,4 +1,6 @@
 import cocos
+import pyglet
+
 from cocos import actions
 from cocos.actions import *
 from random import randint
@@ -83,7 +85,9 @@ class Ennemi(cocos.layer.Layer):
 	def update(self,dt):
 		self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
 		collision = self.collisionE.objs_colliding(self.sprite)
-		if collision or self.sprite.position[0] <= 0 or self.sprite.position[1] < 0:
+		if collision or self.sprite.position[0] <= 0 or self.sprite.position[1] < 0 and self.sprite.position[0] < 1600 :
+			music = pyglet.media.load("Song/explosion.wav")
+			music.play()
 			self.sprite.stop()
 			self.unschedule(self.fire)
 			self.remove(self.sprite)
