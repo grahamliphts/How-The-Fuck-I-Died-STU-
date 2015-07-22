@@ -44,7 +44,7 @@ class Shield(cocos.layer.Layer):
         self.shield_ui.do(Hide())
 
         shield = cocos.sprite.Sprite('Sprites/shield/shield_ship.png')
-        shield.scale = 1
+        shield.scale = 2
         self.add(shield, z=0)
         self.shield = shield
         self.shield.do(Hide())
@@ -53,6 +53,7 @@ class Shield(cocos.layer.Layer):
         self.ReloadState = 0
         self.Durability = 5 # 5 Seconds Durability
         self.isReload = 1
+        self.Active = 0
         
         
     def ActiveShield(self):
@@ -62,6 +63,7 @@ class Shield(cocos.layer.Layer):
             self.shield_ui100.do(Hide())
             self.shield_ui.do(Show())
             
+            self.Active = 1
             self.schedule_interval(self.shieldActivate, self.Durability)
             self.schedule_interval(self.reload, self.Reload/4)
             
@@ -89,4 +91,5 @@ class Shield(cocos.layer.Layer):
 
     def shutDownShield(self):
         self.shield.do(Hide())
+        self.Active = 0
         self.unschedule(self.shieldActivate)

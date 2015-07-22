@@ -6,20 +6,23 @@ import cocos
 import cocos.collision_model as cm
 
 class Vaisseau(Layer):
-	def __init__(self, name, life, sprite, arme, collision_m, shield, bomb):
+	def __init__(self, name, life, sprite, arme, CollisionManagerPlayer, CollisionManagerEnnemi, shield, bomb):
 		super(Vaisseau,self).__init__()
 		
 		width, height = director.get_window_size()
 		
 		self.sprite = sprite
-		self.sprite.scale = 0.2
+		self.sprite.scale = 2
 		self.sprite.position = (width//2, height//2)
 		self.sprite.cshape = cm.AARectShape(
 			self.sprite.position,
 			self.sprite.width//2,
 			self.sprite.height//2
 		)
-		collision_m.add(self.sprite)
+		CollisionManagerPlayer.add(self.sprite)
+		CollisionManagerEnnemi.add(self.sprite)
+
+		self.CollisionManagerEnnemi = CollisionManagerEnnemi
 		self.name = name
 		self.life = life
 		
@@ -32,11 +35,11 @@ class Vaisseau(Layer):
 		self.shieldClass.shield.position = self.sprite.position
 
 		self.bombClass = bomb
+
 	
 	def shoot(self):
-		s = Sound() 
-		s.read('sound.wav') 
-		s.play()
+		music = pyglet.media.load("Song/laser.wav")
+		music.play()
 		x, y = self.sprite.position
 		width, height = director.get_window_size()
 		if(self.arme.name == "Simple"):
@@ -64,41 +67,35 @@ class Vaisseau(Layer):
 		return self.missileSprites[-1]
 			
 	def ActiveShield(self):
+		music = pyglet.media.load("Song/shield.wav")
+		music.play()
 		self.shieldClass.ActiveShield()
+		
 	def ExplodeBomb(self):
+		music = pyglet.media.load("Song/bombe.wav")
+		music.play()
 		self.bombClass.Explode(self.sprite.position)
 		
 	def add_collider_missile(self, sprite):
 		self.missileSprites.append(sprite)
-		self.missileSprites[-1].cshape = cm.AARectShape(
-			self.missileSprites[-1].position,
-			self.missileSprites[-1].width//2,
-			self.missileSprites[-1].height//2
-		)
+		self.missileSprites[-1].cshape = cm.AARectShape(self.missileSprites[-1].position, 80, 20)
+		self.CollisionManagerEnnemi.add(self.missileSprites[-1])
+		
 	def add_to_layer(self, x, y):
 		self.add(self.missileSprites[-1])
 		self.missileSprites[-1].position = ( x, y)
 		
 	def update(self, dt):
-
 		self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
-		#self.sprite.cshape.center = self.sprite.position 
 		self.shieldClass.shield.position = self.sprite.position
-
+                
 		for missile in self.missileSprites:
 			missile.cshape.center = eu.Vector2(missile.position[0], missile.position[1])
-		#	missile.cshape.center = missile.position
-		#	w1 = missile.width
-		#	h1 = missile.height
-		#	x, y = missile.position
-		#	width, height = director.get_window_size()
-		#	if(x - w1 <= 0 or x + w1 >= width or y - h1 <= 0 or y + h1 >= height):
-		#		if missile in self.get_children():
-		#			self.remove(missile)
-		#print("pouet")
+	
 			
 	def on_enter(self):
 		super(Vaisseau,self).on_enter()
+		
 	def on_exit(self):
 		super(Vaisseau,self).on_exit()
 
@@ -126,5 +123,4 @@ class MoveByAdditive(Action):
         if self._elapsed > self.duration:
             dt = self.duration - old_elapsed
             self._done = True
-        self.target.position += dt*self.delta_pos				
-
+        self.target.position += dt*self.delta_pos

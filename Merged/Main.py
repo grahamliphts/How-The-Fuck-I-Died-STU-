@@ -1,5 +1,4 @@
 import cocos
-
 import pyglet
 from pyglet import gl, font
 from pyglet.window.key import KeyStateHandler
@@ -11,10 +10,10 @@ from cocos.menu import *
 from cocos.text import *
 from cocos.actions import *
 from cocos.director import director
-import time
 
 from GUI import *
 import Game
+import time
 
 class MainMenu( Menu ):
 
@@ -22,7 +21,7 @@ class MainMenu( Menu ):
         super( MainMenu, self).__init__('How the #(%@ i die') 
 
         #self.select_sound = soundex.load('move.mp3')
-
+        
         # you can override the font that will be used for the title and the items
         # you can also override the font size and the colors. see menu.py for
         # more info
@@ -53,14 +52,13 @@ class MainMenu( Menu ):
         import Game
         Score = 0
         director.push(Game.get_newgame())
-        print("pouet " + str(Score))
     def on_quit(self):
         pyglet.app.exit()
-
+        
 class EndScreen( Menu ):
-
-    def __init__(self,score):
-        super( EndScreen, self).__init__('How the #(%@ i die') 
+    def __init__(self, score):
+        super( EndScreen, self).__init__('How the #(%@ i die')
+        
         self.score = score
         #self.select_sound = soundex.load('move.mp3')
 
@@ -85,7 +83,6 @@ class EndScreen( Menu ):
 
         items = []
 
-        #val = str(Score)
         val = str(self.score)
         items.append( MenuItem('Score : ' + val,self.on_new_game))
 
@@ -102,11 +99,12 @@ class EndScreen( Menu ):
 
     def on_quit(self):
         pyglet.app.exit()
-            
+        
 if __name__ == "__main__":
     global Score
 
     last_time = time.clock()
+    
     pyglet.resource.path.append('Sprites')
     pyglet.resource.reindex()
     font.add_directory('Sprites')
@@ -116,5 +114,6 @@ if __name__ == "__main__":
     scene.add( MultiplexLayer( MainMenu()),z=1 )
     scene.add( BackgroundLayer(), z=0 )
     director.run( scene )
+    
 
 
