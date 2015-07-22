@@ -144,7 +144,7 @@ class bullet(cocos.layer.Layer):
         moveToLeft = MoveTo((-30,self.sprite.position[1]),duration = duration)
         self.sprite.do(moveToLeft)
         self.collision_manager = collisionManager
-        self.schedule_interval(self.bulletUpdate,0.5)
+        self.schedule_interval(self.bulletUpdate,0.1)
 
     def bulletUpdate(self,dt):
         self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
