@@ -8,12 +8,14 @@ import cocos.euclid as eu
 import cocos.collision_model as cm
 
 class Ennemi_wave(cocos.layer.Layer):
-    def __init__(self, starnum, speed, scene, colmanplayer, colmanennemi):
+    def __init__(self, starnum, speed, scene, colmanplayer, colmanennemi, spritedir):
         super(Ennemi_wave, self).__init__()
         self.speed = speed
         
         self.collp = colmanplayer
         self.colle = colmanennemi
+
+        self.spritedir = spritedir
         
         self.linkedScene = scene
         self.starnum = starnum
@@ -30,22 +32,23 @@ class Ennemi_wave(cocos.layer.Layer):
         while i < StarNum :
             X = randint(1700,1900)
             Y = randint(0,800)
-            sprite = 'Sprites/Ennemi1-1.png'
-            ennemi = Ennemi(sprite, self.speed, X, Y, self.collp, self.colle, self.linkedScene)
+            ennemi = Ennemi(self.spritedir, self.speed, X, Y, self.collp, self.colle, self.linkedScene)
             self.add(ennemi, z = 4)
             self.linkedScene.add(ennemi, z = 4)
             i += 1;
 
 
 class Ennemi(cocos.layer.Layer):
-    def __init__(self, spritePath, speed, posX, posY, colmanplayer, colmanennemi, scene):
+    def __init__(self, spritedir, speed, posX, posY, colmanplayer, colmanennemi, scene):
         super(Ennemi, self).__init__()
         scale = ScaleBy(1.1, duration=0.5)
         
         self.collp = colmanplayer
         self.colle = colmanennemi
         
-        self.sprite = cocos.sprite.Sprite(spritePath)
+        self.spritedir = spritedir
+        
+        self.sprite = cocos.sprite.Sprite(self.spritedir + '/Ennemi1-1.png')
         self.sprite.position = (posX,posY)
         self.sprite.scale = 0.15
 
@@ -53,7 +56,6 @@ class Ennemi(cocos.layer.Layer):
         self.sprite_explosion.position = (posX,posY)
         self.sprite_explosion.scale = 1
         self.sprite_explosion.do(Hide())
-        
         
         self.linkedScene = scene
         self.name = "Ennemi"
@@ -104,20 +106,18 @@ class Ennemi(cocos.layer.Layer):
             self.sprite_explosion.position = self.sprite.position
             self.sprite_explosion.do(Show())
             self.unschedule(self.update)
-            self.wait = 0
-            self.schedule_interval(self.explode,2)
-            
+            self.schedule_interval(self.explode,2)     
 
     def explode(self, dt):
         self.sprite.stop()
-        self.unschedule(self.explode)
         self.remove(self.sprite)
-        self.colle.remove_tricky(self.sprite)
         self.sprite_explosion.do(Hide())
+        self.unschedule(self.explode)
+        self.colle.remove_tricky(self.sprite)
         self.kill()
                 
     def fire(self,dt):
-        Bullet = bullet(self.sprite.position[0],self.sprite.position[1],500,self.collp)
+        Bullet = bullet(self.sprite.position[0],self.sprite.position[1],500,self.collp, self.spritedir)
         self.linkedScene.add(Bullet, z = 3)
 
     def move_straight(self, dura):
@@ -127,15 +127,17 @@ class Ennemi(cocos.layer.Layer):
         return MoveTo((-30,self.sprite.position[1]+randint(0, 200)),dura)
 
 class bullet(cocos.layer.Layer):
-    def __init__(self,posX,posY,speed,collisionManager):
+    def __init__(self,posX,posY,speed,collisionManager, spritedir):
         super(bullet,self).__init__()
-        self.sprite = cocos.sprite.Sprite ('Sprites/Armes/missile2.png')
+        self.sprite = cocos.sprite.Sprite (spritedir + '/Armes/missile2.png')
         self.sprite.position = (posX,posY)
         self.sprite.scale = 1
         self.name = "EnnemiBullet"
         
         radius = 1
         self.sprite.cshape = cm.CircleShape(eu.Vector2(posX, posY), radius)
+        
+        self.isdead = 0
         
         self.add(self.sprite)
         collisionManager.add(self.sprite)
@@ -147,12 +149,15 @@ class bullet(cocos.layer.Layer):
         self.schedule_interval(self.bulletUpdate,0.1)
 
     def bulletUpdate(self,dt):
-        self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
-        collision = self.collision_manager.objs_colliding(self.sprite)
-        if collision or self.sprite.position[0] <= 0:
+        if self.isdead == 1:
             self.sprite.stop()
             self.remove(self.sprite)
             self.unschedule(self.bulletUpdate)
             self.collision_manager.remove_tricky(self.sprite)
             self.kill()
+            
+        self.sprite.cshape.center = eu.Vector2(self.sprite.position[0], self.sprite.position[1])
+        collision = self.collision_manager.objs_colliding(self.sprite)
+        if collision or self.sprite.position[0] <= 0:
+            self.isdead = 1
     

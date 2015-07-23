@@ -41,27 +41,28 @@ class Vaisseau(Layer):
 		music = pyglet.media.load("Song/laser.wav")
 		music.play()
 		x, y = self.sprite.position
+		
 		width, height = director.get_window_size()
 		if(self.arme.name == "Simple"):
 			sprite = cocos.sprite.Sprite(self.arme.missileSprite)
 			self.add_collider_missile(sprite)
-			self.add_to_layer(x + self.sprite.width//2 + 10, y)
+			self.add_to_layer(x + self.sprite.width//2 + 20, y)
 			self.missileSprites[-1].do( MoveByAdditive((width, 0), 1) )
 			
 		elif(self.arme.name == "Triple"):
 			sprite1 = cocos.sprite.Sprite(self.arme.missileSprite)
 			self.add_collider_missile(sprite1)
-			self.add_to_layer(x + self.sprite.width//2 + 10, y)
+			self.add_to_layer(x + self.sprite.width//2 + 20, y)
 			self.missileSprites[-1].do( MoveByAdditive((width, 0), 1))
 			
 			sprite2 = cocos.sprite.Sprite(self.arme.missileSprite)
 			self.add_collider_missile(sprite2)
-			self.add_to_layer(x + self.sprite.width//2 + 10, y)
+			self.add_to_layer(x + self.sprite.width//2 + 20, y)
 			self.missileSprites[-1].do( MoveBy((width, height//2), 1.5) )
 			
 			sprite3 = cocos.sprite.Sprite(self.arme.missileSprite)
 			self.add_collider_missile(sprite3)
-			self.add_to_layer(x + self.sprite.width//2 + 10, y)
+			self.add_to_layer(x + self.sprite.width//2 + 20, y)
 			self.missileSprites[-1].do( MoveBy((width, -height//2), 1.5) )
 			
 		return self.missileSprites[-1]

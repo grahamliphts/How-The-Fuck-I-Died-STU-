@@ -6,7 +6,7 @@ class Shield(cocos.layer.Layer):
 
     is_event_handler = True
 
-    def __init__(self, posX, posY):
+    def __init__(self, posX, posY, spritedir):
         super(Shield, self).__init__()
         
         shield_ui100 = cocos.sprite.Sprite('Sprites/shield/shield_100.png')
@@ -43,7 +43,7 @@ class Shield(cocos.layer.Layer):
         self.shield_ui = shield_ui
         self.shield_ui.do(Hide())
 
-        shield = cocos.sprite.Sprite('Sprites/shield/shield_ship.png')
+        shield = cocos.sprite.Sprite(spritedir + '/shield/shield_ship.png')
         shield.scale = 2
         self.add(shield, z=0)
         self.shield = shield

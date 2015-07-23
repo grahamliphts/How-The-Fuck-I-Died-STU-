@@ -6,10 +6,10 @@ import pyglet
 from pyglet.gl import *
 
 class BackgroundLayer( Layer ):
-	def __init__(self):
+	def __init__(self, spritedir = 'Sprites'):
 		super( BackgroundLayer, self ).__init__()
 		width, height = director.get_window_size()
-		self.img = cocos.sprite.Sprite('Sprites/Background/backgroundMenu.png')
+		self.img = cocos.sprite.Sprite(spritedir + '/Background/backgroundMenu.png')
 		self.img.position = (width//2,height//2)
 		self.img.scale_x = (width/self.img.width)
 		self.img.scale_y = (height/self.img.height)

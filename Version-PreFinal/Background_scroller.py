@@ -5,7 +5,7 @@ from random import randint
 
 class Backgroundstar(cocos.layer.Layer):
     """ Parralax Background"""
-    def __init__(self, starnum, speed):
+    def __init__(self, starnum, speed, spritedir):
         """ Argument of star background paralaxx nbetoiles, vitesseEtoiles"""
         super(Backgroundstar, self).__init__()
         self.speed = speed
@@ -15,7 +15,7 @@ class Backgroundstar(cocos.layer.Layer):
         while i < starnum :
             x = randint(-10, 1800)
             y = randint( -10, 800)
-            star.append(cocos.sprite.Sprite('Sprites/Background/Star.png'))
+            star.append(cocos.sprite.Sprite(spritedir + '/Background/Star.png'))
             star[i].position = (x, y)
             star[i].scale = 0.1
             self.add(star[i])

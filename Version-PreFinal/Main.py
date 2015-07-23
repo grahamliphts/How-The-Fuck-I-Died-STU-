@@ -47,11 +47,20 @@ class MainMenu( Menu ):
         items.append( MenuItem('Quit', self.on_quit) )
         
         self.create_menu( items, shake(), shake_back() )
+        self.modesale = 0
         
+    def on_key_press(self, k, m ):
+        if k == key.P:
+            if self.modesale == 0:
+                self.modesale = 1
+            else:
+                self.modesale = 0
+                    
     def on_new_game(self):
         import Game
         Score = 0
-        director.push(Game.get_newgame())
+        director.push(Game.get_newgame(self.modesale))
+        
     def on_quit(self):
         pyglet.app.exit()
         

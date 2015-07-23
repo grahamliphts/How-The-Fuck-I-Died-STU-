@@ -75,6 +75,8 @@ class GameView( Layer ):
     
     def update(self, dt):
         """ Colliders update"""
+        self.vaisseau.sprite.cshape.position = self.vaisseau.sprite.position
+        
         for other in self.col_manager.iter_colliding(self.vaisseau.sprite):
             if other not in self.vaisseau.get_children():
                 bombactive = self.vaisseau.bombClass.active
@@ -82,7 +84,7 @@ class GameView( Layer ):
                     self.health -= 1
                     self.healthState.scale = self.health / self.initHealth
                 # FIN DE PARTIE
-                if self.health <= 0:
+                #if self.health <= 0:
                     self.player.pause()
                     music = pyglet.media.load("Song/death.wav")
                     music.play()
@@ -97,6 +99,7 @@ class GameView( Layer ):
         
     def on_exit(self):
         """ On exit event"""
+        self.player.pause()
         super(GameView, self).on_exit()
         
 class scoreC( Layer ):
@@ -106,23 +109,28 @@ class scoreC( Layer ):
         super(scoreC, self).__init__()
         self.value = value
         
-def get_newgame():
+def get_newgame(mode):
     """returns the game scene"""
     scene = Scene()
     collision_manager_Ennemi = cm.CollisionManagerBruteForce()
     collision_manager_Player = cm.CollisionManagerBruteForce()
+
+    if mode == 0:
+        spritedir = 'Sprites'
+    else:
+        spritedir = 'Polemique'
     
      # view
-    arme = Arme("Simple", 20, 'Sprites/Armes/missile3.png')
-    sprite = cocos.sprite.Sprite('Sprites/Ship2.png')
-    shield = Shield(50, 100)
+    arme = Arme("Simple", 20, spritedir + '/Armes/missile3.png')
+    sprite = cocos.sprite.Sprite(spritedir + '/Ship2.png')
+    shield = Shield(50, 100, spritedir)
     bombSpe = Bomb(100, 120, 100, collision_manager_Ennemi)
     vaisseau = Vaisseau("Default", 100, sprite, arme, collision_manager_Player, collision_manager_Ennemi, shield, bombSpe)
     hud = HUD()
     view = GameView(hud, vaisseau, collision_manager_Player)
-    Star = Backgroundstar(30, 60)
+    Star = Backgroundstar(30, 60, spritedir)
 
-    ennemi_wave = Ennemi_wave(10,200,scene, collision_manager_Player, collision_manager_Ennemi)
+    ennemi_wave = Ennemi_wave(10,200,scene, collision_manager_Player, collision_manager_Ennemi, spritedir)
     
     #model
     model = GameModel()
@@ -138,7 +146,7 @@ def get_newgame():
     scene.add( bombSpe, z = 3 , name = "Bombe")
     scene.add( vaisseau , z=2, name="vaisseau" )
     scene.add( ennemi_wave, z = 2, name = "ennemis")
-    scene.add( BackgroundLayer(), z=0, name="background" )
+    scene.add( BackgroundLayer(spritedir), z=0, name="background" )
     scene.add( Star,z = 0, name = "Stars")
 
     

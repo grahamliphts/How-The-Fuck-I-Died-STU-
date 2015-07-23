@@ -36,7 +36,6 @@ class GameCtrl( Layer ):
 				print("up")
 			elif k == key.SPACE:
 				self.view.vaisseau_shoot()
-				#print("Shoot");
 			elif k == key.V:
                                 self.view.vaisseau.ActiveShield()
 			elif k == key.B:
